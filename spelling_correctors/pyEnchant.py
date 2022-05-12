@@ -24,14 +24,15 @@ def repairWordsAutomatically(wordlist):
     wordsCheckedOrCorrected = []
     for word in wordlist:
         if len(word.split()) > 1:
+            TempStr = ''
             for x in word.split():
-                TempStr = ''
                 if not d.check(x):
                     sug = d.suggest(x)
                     sug = sug[0]
                     TempStr = TempStr + ' ' + sug
                 else:
-                    TempStr = TempStr + ' ' + word
+                    TempStr = TempStr + ' ' + x
+            TempStr = TempStr.strip()
             wordsCheckedOrCorrected.append(TempStr)
         else:
             if not d.check(word):
