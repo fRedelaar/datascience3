@@ -13,6 +13,20 @@ og_df_train = pd.read_csv('home-depot-data/train.csv', encoding="ISO-8859-1")
 og_df_test = pd.read_csv('home-depot-data/test.csv', encoding="ISO-8859-1")
 df_pro_desc = pd.read_csv('home-depot-data/product_descriptions.csv')
 
+# Reads in the spelling corrected search queries
+train_spellchecked = pd.read_csv('spelling_correctors/pyEnchant-train.csv', encoding="ISO-8859-1")
+test_spellchecked = pd.read_csv('spelling_correctors/pyEnchant-test.csv', encoding="ISO-8859-1")
+
+# Here we swap the old search_term with the spelling corrected
+og_df_train = og_df_train.drop(['search_term'], axis=1)
+og_df_train['search_term'] = train_spellchecked
+og_df_train = og_df_train[["id","product_uid","product_title","search_term","relevance"]]
+
+og_df_test = og_df_test.drop(['search_term'], axis=1)
+og_df_test['search_term'] = train_spellchecked
+og_df_test = og_df_test[["id","product_uid","product_title","search_term"]]
+
+
 og_df_train_without_relevance = og_df_train.drop(['relevance'], axis=1).values
 og_df_train_only_relevance = og_df_train.drop(["id", "product_uid", "product_title", "search_term"], axis=1).values
 
@@ -37,8 +51,6 @@ df_all = pd.concat((matrix_train, matrix_test), axis=0, ignore_index=True)
 
 df_all = pd.merge(df_all, df_pro_desc, how='left', on='product_uid')
 
-df_all.columns = ['id', 'product_uid', 'product_title', 'search_term', 'product_description']
-
 df_all['search_term'] = df_all['search_term'].map(lambda x: str_stemmer(x))
 df_all['product_title'] = df_all['product_title'].map(lambda x: str_stemmer(x))
 df_all['product_description'] = df_all['product_description'].map(lambda x: str_stemmer(x))
@@ -50,7 +62,6 @@ df_all['product_info'] = df_all['search_term'] + "\t" + df_all['product_title'] 
 df_all['word_in_title'] = df_all['product_info'].map(lambda x: str_common_word(x.split('\t')[0], x.split('\t')[1]))
 df_all['word_in_description'] = df_all['product_info'].map(
     lambda x: str_common_word(x.split('\t')[0], x.split('\t')[2]))
-
 
 df_all = df_all.drop(
     ['search_term', 'product_title', 'product_description', 'product_info'], axis=1)

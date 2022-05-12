@@ -71,3 +71,4 @@ repairWordsAutomatically(searchQueries)
 print(datetime.datetime.now() - begin_time)
 
 # 0:21:05.866842  21 minutes for training data to be processed.
+# when using this data, RMSE becomes RMSE:  0.48853256912260096.
