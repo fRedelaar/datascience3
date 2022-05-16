@@ -8,7 +8,7 @@ import csv
 
 begin_time = datetime.datetime.now()
 
-d = enchant.Dict("en_US")
+d = enchant.DictWithPWL("en_US", "brandnames.txt")
 
 traindata = pd.read_csv('../home-depot-data/test.csv', encoding="ISO-8859-1")
 searchQueries = traindata["search_term"]
@@ -32,6 +32,7 @@ def repairWordsAutomatically(wordlist):
 
     wordsCheckedOrCorrected = []
     for word in wordlist:
+        print(word)
         word = word.translate(str.maketrans('', '', string.punctuation))
 
         if len(word.split()) > 1:
