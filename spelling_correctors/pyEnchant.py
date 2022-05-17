@@ -10,7 +10,7 @@ begin_time = datetime.datetime.now()
 
 d = enchant.DictWithPWL("en_US", "brandnames.txt")
 
-traindata = pd.read_csv('../home-depot-data/train-small-felicia.csv', encoding="ISO-8859-1")
+traindata = pd.read_csv('../home-depot-data/test.csv', encoding="ISO-8859-1")
 searchQueries = traindata["search_term"]
 
 
@@ -65,7 +65,7 @@ def repairWordsAutomatically(wordlist):
                 wordsCheckedOrCorrected.append(word)
     print(wordsCheckedOrCorrected)
     df = pd.DataFrame(wordsCheckedOrCorrected)
-    df.to_csv('PyEnchant-train-small.csv', index=False, header=False)
+    df.to_csv('PyEnchant-test-newest.csv', index=False, header=False)
 
 repairWordsAutomatically(searchQueries)
 
