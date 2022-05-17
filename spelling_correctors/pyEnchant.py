@@ -10,7 +10,7 @@ begin_time = datetime.datetime.now()
 
 d = enchant.DictWithPWL("en_US", "brandnames.txt")
 
-traindata = pd.read_csv('../home-depot-data/train.csv', encoding="ISO-8859-1")
+traindata = pd.read_csv('../home-depot-data/train-small-felicia.csv', encoding="ISO-8859-1")
 searchQueries = traindata["search_term"]
 
 
@@ -41,7 +41,7 @@ def repairWordsAutomatically(wordlist):
                 if containsNumber(x):
                     TempStr = TempStr + ' ' + x
                 elif not d.check(x):
-                    sug = d.suggest(x)
+                    sug = d.suggest(x.lower())
                     try:
                         sug = sug[0]
                         TempStr = TempStr + ' ' + sug
@@ -55,7 +55,7 @@ def repairWordsAutomatically(wordlist):
             if containsNumber(word):
                 wordsCheckedOrCorrected.append(word)
             elif not d.check(word):
-                sug = d.suggest(word)
+                sug = d.suggest(word.lower())
                 try:
                     sug = sug[0]
                     wordsCheckedOrCorrected.append(sug)
@@ -65,7 +65,7 @@ def repairWordsAutomatically(wordlist):
                 wordsCheckedOrCorrected.append(word)
     print(wordsCheckedOrCorrected)
     df = pd.DataFrame(wordsCheckedOrCorrected)
-    df.to_csv('PyEnchant-train.csv', index=False, header=False)
+    df.to_csv('PyEnchant-train-small.csv', index=False, header=False)
 
 repairWordsAutomatically(searchQueries)
 
@@ -73,3 +73,5 @@ print(datetime.datetime.now() - begin_time)
 
 # 0:21:05.866842  21 minutes for training data to be processed.
 # when using this data, RMSE becomes RMSE:  0.48853256912260096.
+# when using this data, RMSE becomes RMSE:  0.48856219825774977 <-- spelling corrected with brandnames!
+# probably worked shitty due caps :(
