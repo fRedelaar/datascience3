@@ -70,8 +70,12 @@ def repairWordsAutomatically(wordlist):
 repairWordsAutomatically(searchQueries)
 
 print(datetime.datetime.now() - begin_time)
+# Original: RMSE:  0.48270497676608215
 
 # 0:21:05.866842  21 minutes for training data to be processed.
-# when using this data, RMSE becomes RMSE:  0.48853256912260096.
-# when using this data, RMSE becomes RMSE:  0.48856219825774977 <-- spelling corrected with brandnames!
+# when using pyEnchant RMSE becomes RMSE:  0.48853256912260096.
+
+# when using pyEnchant with brandnames RMSE becomes RMSE:  0.48856219825774977
 # probably worked shitty due caps :(
+
+# spelling corrected with brand names, using all lowercases: RMSE: 0.48325103006033926  <-- finally some result!
