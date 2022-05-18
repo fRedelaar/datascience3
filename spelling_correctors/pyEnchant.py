@@ -10,8 +10,11 @@ begin_time = datetime.datetime.now()
 
 d = enchant.DictWithPWL("en_US", "brandnames.txt")
 
-traindata = pd.read_csv('../home-depot-data/test.csv', encoding="ISO-8859-1")
+traindata = pd.read_csv('../home-depot-data/train.csv', encoding="ISO-8859-1")
 searchQueries = traindata["search_term"]
+
+df = pd.DataFrame(searchQueries)
+df.to_csv('train-original-search-queries.csv', index=False, header=False)
 
 
 # The suggestions are returned in a list, ordered from most likely replacement to least likely. source:
@@ -67,7 +70,7 @@ def repairWordsAutomatically(wordlist):
     df = pd.DataFrame(wordsCheckedOrCorrected)
     df.to_csv('PyEnchant-test-newest.csv', index=False, header=False)
 
-repairWordsAutomatically(searchQueries)
+# repairWordsAutomatically(searchQueries)
 
 print(datetime.datetime.now() - begin_time)
 # Original: RMSE:  0.48270497676608215

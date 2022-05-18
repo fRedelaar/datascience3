@@ -13,19 +13,19 @@ og_df_train = pd.read_csv('home-depot-data/train.csv', encoding="ISO-8859-1")
 og_df_test = pd.read_csv('home-depot-data/test.csv', encoding="ISO-8859-1")
 df_pro_desc = pd.read_csv('home-depot-data/product_descriptions.csv')
 
-# # Reads in the spelling corrected search queries
-# train_spellchecked = pd.read_csv('spelling_correctors/pyEnchant-train-newest.csv', encoding="ISO-8859-1")
-# test_spellchecked = pd.read_csv('spelling_correctors/pyEnchant-test-newest.csv', encoding="ISO-8859-1")
-#
-# # Here we swap the old search_term with the spelling corrected
-# og_df_train = og_df_train.drop(['search_term'], axis=1)
-# og_df_train['search_term'] = train_spellchecked
-# og_df_train = og_df_train[["id","product_uid","product_title","search_term","relevance"]]
-#
-# og_df_test = og_df_test.drop(['search_term'], axis=1)
-# og_df_test['search_term'] = test_spellchecked
-# og_df_test = og_df_test[["id","product_uid","product_title","search_term"]]
-#
+# Reads in the spelling corrected search queries
+train_spellchecked = pd.read_csv('spelling_correctors/pyEnchant-train-newest.csv', encoding="ISO-8859-1")
+test_spellchecked = pd.read_csv('spelling_correctors/pyEnchant-test-newest.csv', encoding="ISO-8859-1")
+
+# Here we swap the old search_term with the spelling corrected
+og_df_train = og_df_train.drop(['search_term'], axis=1)
+og_df_train['search_term'] = train_spellchecked
+og_df_train = og_df_train[["id","product_uid","product_title","search_term","relevance"]]
+
+og_df_test = og_df_test.drop(['search_term'], axis=1)
+og_df_test['search_term'] = test_spellchecked
+og_df_test = og_df_test[["id","product_uid","product_title","search_term"]]
+
 
 og_df_train_without_relevance = og_df_train.drop(['relevance'], axis=1).values
 og_df_train_only_relevance = og_df_train.drop(["id", "product_uid", "product_title", "search_term"], axis=1).values
@@ -73,7 +73,7 @@ id_test = df_test['id']
 X_train = df_train.drop(['id'], axis=1).values
 X_test = df_test.drop(['id'], axis=1).values
 
-rf = RandomForestRegressor(n_estimators=170, max_depth=9, random_state=0)
+rf = RandomForestRegressor(n_estimators=15, max_depth=6, random_state=0)
 clf = BaggingRegressor(rf, n_estimators=45, max_samples=0.1, random_state=25)
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
